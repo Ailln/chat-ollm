@@ -14,7 +14,8 @@ import {
   UserOutlined,
   DeleteOutlined,
   CopyOutlined,
-  SettingOutlined, DownloadOutlined
+  SettingOutlined,
+  DownloadOutlined,
 } from '@ant-design/icons';
 import {
   Avatar,
@@ -30,7 +31,7 @@ import {
   Row,
   Dropdown,
   InputNumber,
-  Space
+  Space,
 } from 'antd';
 import type {MenuProps} from 'antd';
 import moment from 'moment';
@@ -48,13 +49,13 @@ export default function IndexPage() {
   );
 
   const [inputValue, setInputValue] = useState('');
-  const [sessionList, setSessionList] = useState<Array<any>>([{
+  const [sessionList, setSessionList] = useState([{
     name: moment().format('YYYYMMDD#HHmmss#SSS'),
     messages: [],
   }]);
   const [sessionIndex, setSessionIndex] = useState(0);
   const [isUpdateSessionList, setIsUpdateSessionList] = useState(true);
-  const [currentSession, setCurrentSession] = useState<any>({
+  const [currentSession, setCurrentSession] = useState({
     name: moment().format('YYYYMMDD#HHmmss#SSS'),
     messages: [],
   });
@@ -132,7 +133,7 @@ export default function IndexPage() {
     setCurrentSession({...initSession});
   };
 
-  const deleteCurrentSession = (index: any) => {
+  const deleteCurrentSession = (index: number) => {
     console.log('[delete] sessionIndex: ' + index);
     const currentSessionList = [...sessionList];
     currentSessionList.splice(index, 1);
@@ -157,7 +158,7 @@ export default function IndexPage() {
     changeSessionIndex(0);
   };
 
-  const changeSessionIndex = (index: any) => {
+  const changeSessionIndex = (index: number) => {
     console.log('[change] sessionIndex: ' + index);
     setSessionIndex(index);
 
@@ -174,6 +175,7 @@ export default function IndexPage() {
     localStorage.setItem('API_KEY', formApiKey);
 
     setConnectSettingModalVisible(false);
+    message.success('set url success');
   };
 
   const onSetSystemKnowledgeIsOK = () => {
@@ -261,6 +263,7 @@ export default function IndexPage() {
       setSendRoleState('user');
     }
   }
+
   const clickSendRole = () => {
     if (sendRoleState === 'user') {
       if (sendModeState === 'real') {
@@ -363,7 +366,7 @@ export default function IndexPage() {
                       <Button
                         ghost
                         type="primary"
-                        icon={<DownloadOutlined />}
+                        icon={<DownloadOutlined/>}
                         size={'small'}
                         onClick={() => {
                           message.warning('to do...');
@@ -433,7 +436,7 @@ export default function IndexPage() {
                 <Button
                   shape="circle"
                   icon={<GithubOutlined/>}
-                  href={'https://github.com/Ailln/chat-ollm.git'}
+                  href={'https://github.com/Ailln/chat-ollm'}
                 />
                 <span style={{marginLeft: 10}}>{'Chat OLLM'}</span>
               </div>
@@ -493,7 +496,7 @@ export default function IndexPage() {
                     actions={[
                       <Popconfirm
                         title="Confirm to DELETE this message?"
-                        onConfirm={()=>deleteSingleMessage(index)}
+                        onConfirm={() => deleteSingleMessage(index)}
                         okText="ok"
                         cancelText="cancel"
                       >
@@ -502,7 +505,9 @@ export default function IndexPage() {
                       <EditOutlined key="edit"/>,
                       <PlusOutlined key="plus"/>,
                       <CopyToClipboard text={messageItem.content}>
-                        <CopyOutlined key="copy" onClick={()=>{message.info("copied")}}/>
+                        <CopyOutlined key="copy" onClick={() => {
+                          message.info("copied")
+                        }}/>
                       </CopyToClipboard>,
                     ]}
                     className={
@@ -593,8 +598,9 @@ export default function IndexPage() {
             <div className="card-content">
               <div className="param-item">
                 <div style={{margin: '8px 0'}}>Model</div>
-                <Dropdown.Button menu={{items: modelParamItems, onClick: (e) => setParams({...params, modelParam: e.key})}}
-                                 icon={<DownOutlined/>} style={{width: '100%'}}>
+                <Dropdown.Button
+                  menu={{items: modelParamItems, onClick: (e) => setParams({...params, modelParam: e.key})}}
+                  icon={<DownOutlined/>} style={{width: '100%'}}>
                   <div>{params.modelParam}</div>
                 </Dropdown.Button>
               </div>
